@@ -12,7 +12,6 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "sendToObsidian") {
     const selectedText = info.selectionText;
     const url = tab.url;
-    const title = tab.title;
     
     // 获取存储的 Obsidian 配置
     chrome.storage.sync.get(['obsidianPath'], function(result) {
@@ -29,8 +28,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         // 构建 Obsidian URI
         const obsidianUri = `obsidian://new?vault=${encodeURIComponent(result.obsidianPath)}&name=${encodeURIComponent(fullFileName)}&content=${encodeURIComponent(content)}`;
         
-        // 在当前标签页打开 URI
-        chrome.tabs.update(tab.id, { url: obsidianUri });
+        // 在后台标签页打开 URI 并在短暂延时后关闭，避免刷新当前页面
+        chrome.tabs.create({ url: obsidianUri, active: false }, (newTab) => {
+          setTimeout(() => {
+            chrome.tabs.remove(newTab.id);
+          }, 1000);
+        });
       } else {
         // 如果未配置 Obsidian 路径，打开选项页面
         chrome.runtime.openOptionsPage();
