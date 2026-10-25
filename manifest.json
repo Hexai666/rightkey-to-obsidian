@@ -1,15 +1,13 @@
 {
   "manifest_version": 3,
   "name": "RightKey to Obsidian Pro",
-  "version": "2.0",
+  "version": "2.1",
   "description": "一键将选中文本导入到 Obsidian 文档 - 专业版",
   "permissions": [
     "contextMenus",
     "storage",
-    "tabs"
-  ],
-  "host_permissions": [
-    "file://*"
+    "activeTab",
+    "scripting"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -23,9 +21,17 @@
   "background": {
     "service_worker": "background.js"
   },
+  "commands": {
+    "send-selection": {
+      "suggested_key": {
+        "default": "Alt+Shift+O"
+      },
+      "description": "发送选中文本到 Obsidian（未选中文本时保存页面链接）"
+    }
+  },
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   }
-} 
+}

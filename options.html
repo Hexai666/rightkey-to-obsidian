@@ -21,12 +21,23 @@
       margin-bottom: 5px;
       font-weight: bold;
     }
+    label.inline {
+      display: inline;
+      font-weight: normal;
+      margin-right: 16px;
+    }
     input[type="text"] {
       width: 100%;
+      box-sizing: border-box;
       padding: 8px;
       border: 1px solid #ddd;
       border-radius: 4px;
       font-size: 14px;
+    }
+    small {
+      color: #666;
+      display: block;
+      margin-top: 5px;
     }
     button {
       background-color: #7C3AED;
@@ -36,9 +47,15 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
+      margin-right: 8px;
     }
     button:hover {
       background-color: #6D28D9;
+    }
+    button.secondary {
+      background-color: #fff;
+      color: #7C3AED;
+      border: 1px solid #7C3AED;
     }
     .status {
       margin-top: 10px;
@@ -82,32 +99,66 @@
 <body>
   <div class="container">
     <h1>RightKey to Obsidian Pro 设置</h1>
+
     <div class="form-group">
-      <label for="obsidianPath">Obsidian Vault 名称：</label>
+      <label for="obsidianPath">Obsidian Vault 名称（必填）：</label>
       <input type="text" id="obsidianPath" placeholder="例如：MyNotes">
-      <small style="color: #666; display: block; margin-top: 5px;">请输入 vault 的名称（不是完整路径）</small>
+      <small>请输入 vault 的名称（不是完整路径），区分大小写</small>
     </div>
+
+    <div class="form-group">
+      <label for="folder">保存到文件夹：</label>
+      <input type="text" id="folder" placeholder="例如：Inbox 或 摘录/网页">
+      <small>vault 内的文件夹路径，留空则保存在根目录；文件夹不存在时会自动创建</small>
+    </div>
+
+    <div class="form-group">
+      <label>保存方式：</label>
+      <input type="radio" name="mode" id="modeNew" value="new">
+      <label class="inline" for="modeNew">每次新建一篇笔记</label>
+      <input type="radio" name="mode" id="modeAppend" value="append">
+      <label class="inline" for="modeAppend">全部追加到同一篇笔记</label>
+    </div>
+
+    <div class="form-group" id="appendGroup">
+      <label for="appendFile">追加到的笔记名：</label>
+      <input type="text" id="appendFile" placeholder="例如：网页摘录">
+    </div>
+
+    <div class="form-group" id="tagsGroup">
+      <label for="tags">标签：</label>
+      <input type="text" id="tags" placeholder="例如：web-clip, 待整理">
+      <small>多个标签用逗号或空格分隔，写入笔记属性（frontmatter）</small>
+    </div>
+
+    <div class="form-group">
+      <input type="checkbox" id="openNote">
+      <label class="inline" for="openNote">保存后切换到 Obsidian 显示该笔记</label>
+      <small>取消勾选后在后台静默保存，不打断阅读</small>
+    </div>
+
     <button id="save">保存设置</button>
+    <button id="test" class="secondary">测试连接</button>
     <div id="status" class="status"></div>
 
     <div class="help-text">
       <h3>如何找到 Vault 名称？</h3>
       <ol>
         <li>打开 Obsidian 应用程序</li>
-        <li>点击左下角的设置图标（⚙️）</li>
-        <li>在设置中选择"关于"选项</li>
-        <li>在"库位置"中可以看到完整路径</li>
-        <li>只需要输入最后一个文件夹的名称</li>
+        <li>点击左下角的 vault 名称（或"打开其他仓库"），列表中显示的就是 vault 名称</li>
+        <li>也可以看 vault 文件夹的路径，取最后一个文件夹的名称</li>
       </ol>
       <p>例如，如果您的完整路径是：</p>
-      <code>/Users/用户名/Documents/Obsidian/MyNotes</code>
+      <code>/Users/用户名/Documents/Obsidian/MyNotes</code> 或 <code>D:\Obsidian\MyNotes</code>
       <p>那么只需要输入：<code>MyNotes</code></p>
+      <p>填好后点击"测试连接"，能打开 Obsidian 并切换到该 vault 即表示设置正确。</p>
       <p class="note" style="margin-top: 15px; padding: 10px; background: #FEF3C7; border-radius: 4px;">
-        <strong>注意：</strong> 请确保 Obsidian 已安装并且启用了 URI 功能。第一次使用时，系统可能会询问是否允许打开 Obsidian。
+        <strong>注意：</strong> 第一次使用时，Chrome 会询问是否允许打开 Obsidian，请勾选"始终允许"后点击"打开"。
+        选中的文字很长时，扩展会通过剪贴板传递内容，此时剪贴板原有内容会被覆盖。
       </p>
     </div>
-    <div class="version">版本 2.0</div>
+    <div class="version">版本 2.1</div>
   </div>
   <script src="options.js"></script>
 </body>
-</html> 
+</html>
